@@ -2,10 +2,16 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ChatsScreen from "../screens/ChatsScreen";
 import NotImplementedScreen from "../screens/NotImplementedScreen";
 import { Ionicons, Entypo } from "@expo/vector-icons";
+import ProfileScreen from "../screens/ProfileScreen";
+import firebase from "../../config";
+
+const auth = firebase.auth();
 
 const Tab = createBottomTabNavigator();
 
-const MainTabNavigator = () => {
+const MainTabNavigator = (props) => {
+  const user = auth.currentUser;
+  const currentid = user.uid;
   return (
     <Tab.Navigator
       initialRouteName="Chats"
@@ -15,13 +21,22 @@ const MainTabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Status"
-        component={NotImplementedScreen}
-        options={{
+        name="Chats"
+        component={ChatsScreen}
+        options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="logo-whatsapp" size={size} color={color} />
+            <Ionicons name="ios-chatbubbles-sharp" size={size} color={color} />
           ),
-        }}
+          headerRight: () => (
+            <Entypo
+              onPress={() => navigation.navigate('Contacts', { currentid })}
+              name="new-message"
+              size={18}
+              color={'royalblue'}
+              style={{ marginRight: 15 }}
+            />
+          ),
+        })}
       />
       <Tab.Screen
         name="Calls"
@@ -42,22 +57,13 @@ const MainTabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Chats"
-        component={ChatsScreen}
-        options={({ navigation }) => ({
+        name="My Profile"
+        component={ProfileScreen}
+        options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-chatbubbles-sharp" size={size} color={color} />
+            <Ionicons name="logo-whatsapp" size={size} color={color} />
           ),
-          headerRight: () => (
-            <Entypo
-              onPress={() => navigation.navigate('Contacts')}
-              name="new-message"
-              size={18}
-              color={'royalblue'}
-              style={{ marginRight: 15 }}
-            />
-          ),
-        })}
+        }}
       />
       <Tab.Screen
         name="Settings"

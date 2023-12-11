@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, ImageBackground, StyleSheet, Text, View ,TextInput, TouchableOpacity} from 'react-native';
+import { ImageBackground, StyleSheet, Text, View ,TextInput, TouchableOpacity} from 'react-native';
 import { useState, useRef } from 'react';
 import firebase from '../../config';
-import green from '../../assets/images/green3.png'
+import green from '../../assets/images/green3.png';
+import Button from '../components/Button';
 
 const auth = firebase.auth(); 
 
@@ -15,12 +16,7 @@ export default function SignUp(props) {
 
   return (
     <ImageBackground source={green} style={styles.container}>
-      <View style={{
-        backgroundColor: '#0005',
-        width: "85%",
-        height: "auto",
-        borderRadius: 5,
-        }}
+      <View style={styles.content}
       >
       <Text style={styles.headerText}>Sign Up</Text>
       <TextInput
@@ -62,20 +58,19 @@ export default function SignUp(props) {
                 alert("password inalide")
             }
         }}
-        title='Submit'
-        ></Button>
-        <Button
+        
+        >OK</Button>
+        {/* <Button
         onPress={() => {
             props.navigation.goBack();
         }}
-        title='Cancel'
-        ></Button>
+        >Cancel</Button> */}
 
       <TouchableOpacity style={{width:"100%", alignItems: "flex-end", marginBottom:17, paddingRight:10}}>
         <Text 
-          onPress={()=> alert ("create")}
+          onPress={() => props.navigation.navigate("auth")}
           style={{color: "white"}}>
-          Create new user
+          Sign In
         </Text>
       </TouchableOpacity>
 
@@ -91,12 +86,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  content: {
+    backgroundColor: '#0005',
+    width: "85%",
+    height: "auto",
+    borderRadius: 8,
+    },
   inputBox: {
     margin:17 ,
     height: 40,
     width: "90%",
     marginVertical: 24,
-    borderRadius: 5,
+    borderRadius: 8,
     borderWidth: 1,
     padding: 10,
     fontSize: 16,

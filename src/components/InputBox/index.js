@@ -2,17 +2,32 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRoute } from "@react-navigation/native";
+import firebase from "../../../config";
 
-const InputBox = () => {
+
+const database = firebase.database();
+const InputBox = ({senderId, receiverId}) => {
   //state data
+  const route = useRoute();
+  const [newMessage, setNewMessage] = useState("");
 
-  const [newMessage, setNewMessage] = useState("Hello!");
-
-  const onSend = () => {
-    console.warn("Sending a new message", newMessage);
-
-    setNewMessage('');
+  const messagesRef =database.ref("messages");
+  const onSend = async () => {
+    
+    const newMessageObject = {
+      text: newMessage,
+      createdAt: firebase.database.ServerValue.TIMESTAMP,
+      senderId,
+      receiverId,
+    };
+    
+    await messagesRef.push(newMessageObject);
+    
+    setNewMessage("");
   };
+
+
   return (
     <SafeAreaView edges={['bottom']} style={styles.container}>
       {/* Icon */}

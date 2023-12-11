@@ -4,10 +4,11 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
-const Message = ({ message }) => {
+const Message = ({ message, currentid }) => {
   const isMyMessage = () => {
-    return message.user.id === "u1";
+    return message.senderId == currentid;
   };
+  
 
   return (
     <View
@@ -20,7 +21,8 @@ const Message = ({ message }) => {
       ]}
     >
       <Text>{message.text}</Text>
-      <Text style={styles.time}>{dayjs(message.createdAt).fromNow(true)}</Text>
+      <Text style={styles.time}>{dayjs(message.createdAt).format('DD/MM/YYYY HH:mm a')}</Text>
+      
     </View>
   );
 };
@@ -44,6 +46,7 @@ const styles = StyleSheet.create({
   time: {
     color: "gray",
     alignSelf: "flex-end",
+    fontSize: 10,
   },
 });
 

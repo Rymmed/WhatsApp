@@ -9,19 +9,45 @@ import {
 } from "react-native";
 import bg from "../../assets/images/BG.png";
 import Message from "../components/Message";
-import messages from "../../assets/data/messages.json";
 import InputBox from "../components/InputBox";
-import { useRoute, useNavigation } from "@react-navigation/native";
-import { useEffect } from 'react';
+import { useRoute } from "@react-navigation/native";
+import { useEffect, useState } from 'react';
+import firebase from "../../config";
 
+const database = firebase.database();
 
 const ChatScreen = () => {
   const route = useRoute();
-  const navigation = useNavigation();
+  const [messages, setMessages] = useState([]);
+  const { currentid } = route.params;
+  const contactId = route.params.contactId;
+  
+  
+  useEffect(() => {
 
-  useEffect( () => {
-    navigation.setOptions({ title: route.params.name});
-  }, [ route.params.name]) ;
+    const messagesRef = database.ref("messages");
+
+    messagesRef.on("value", (snapshot) => {
+      const messagesData = snapshot.val();
+      const messagesArray = Object.values(messagesData || {});
+
+      const filteredMessages = messagesArray.filter(
+        (message) =>
+          (message.senderId === currentid &&
+            message.receiverId === contactId) ||
+          (message.senderId === contactId &&
+            message.receiverId === currentid)
+      );
+
+      setMessages(filteredMessages);
+      console.log(filteredMessages);
+    }, (error) => {
+      console.error("Error fetching messages:", error);
+    });
+
+    return () => messagesRef.off();
+  }, [currentid, contactId]);
+
   
   return (
     <KeyboardAvoidingView
@@ -32,11 +58,11 @@ const ChatScreen = () => {
       <ImageBackground source={bg} style={styles.bg}>
         <FlatList
           data={messages}
-          renderItem={({ item }) => <Message message={item} />}
+          renderItem={({ item }) => <Message message={item} currentid= {currentid} />}
           style={styles.list}
           inverted
         />
-        <InputBox />
+        <InputBox senderId={currentid} receiverId={contactId} />
       </ImageBackground>
     </KeyboardAvoidingView>
   );
