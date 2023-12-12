@@ -24,7 +24,7 @@ const ChatScreen = () => {
   
   
   useEffect(() => {
-
+    
     const messagesRef = database.ref("messages");
 
     messagesRef.on("value", (snapshot) => {
@@ -45,7 +45,9 @@ const ChatScreen = () => {
       console.error("Error fetching messages:", error);
     });
 
-    return () => messagesRef.off();
+    return () => {
+      unsubscribe();
+    };
   }, [currentid, contactId]);
 
   

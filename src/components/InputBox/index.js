@@ -6,23 +6,26 @@ import { useRoute } from "@react-navigation/native";
 import firebase from "../../../config";
 
 
+
 const database = firebase.database();
 const InputBox = ({senderId, receiverId}) => {
   //state data
   const route = useRoute();
   const [newMessage, setNewMessage] = useState("");
 
-  const messagesRef =database.ref("messages");
   const onSend = async () => {
+    const messagesRef =database.ref("messages");
+    const timestamp = Date.now();
+    console.log("Timestamp before sending:", timestamp);
     
     const newMessageObject = {
       text: newMessage,
-      createdAt: firebase.database.ServerValue.TIMESTAMP,
+      timestamp: timestamp,
       senderId,
       receiverId,
     };
     
-    await messagesRef.push(newMessageObject);
+    messagesRef.push(newMessageObject);
     
     setNewMessage("");
   };

@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
+// import relativeTime from "dayjs/plugin/relativeTime";
+// dayjs.extend(relativeTime);
 
 const Message = ({ message, currentid }) => {
   const isMyMessage = () => {
@@ -21,7 +21,7 @@ const Message = ({ message, currentid }) => {
       ]}
     >
       <Text>{message.text}</Text>
-      <Text style={styles.time}>{dayjs(message.createdAt).format('DD/MM/YYYY HH:mm a')}</Text>
+      <Text style={styles.time}>{dayjs(message.timestamp).format('DD/MM/YYYY HH:mm a')}</Text>
       
     </View>
   );
