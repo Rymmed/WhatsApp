@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { ImageBackground, StyleSheet, Text, View ,TextInput, TouchableOpacity} from 'react-native';
 import { useState, useRef } from 'react';
 import firebase from '../../config';
-import green from '../../assets/images/green3.png';
+import green from '../../assets/images/green1.jpg';
 import Button from '../components/Button';
 
 const auth = firebase.auth(); 

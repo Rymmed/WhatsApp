@@ -3,33 +3,47 @@ import { useNavigation } from "@react-navigation/native";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
+import { useRoute } from "@react-navigation/native";
 
-const ChatListItem = ({ chat }) => {
+const ChatListItem = ({ user,lastMessage }) => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { currentid } = route.params;
   return (
+    
     <Pressable
-      onPress={() => navigation.navigate('Chat', {id: chat.id, name: chat.user.name})}
+    onPress={() =>
+      navigation.navigate("Chat", {
+        currentid,
+        contactId: user.id,
+        contactName: `${user.firstName} ${user.lastName}`,
+      })
+    }
       style={styles.container}
     >
       <Image
         source={{
-          uri: chat.user.image,
+          uri: user.url,
         }}
         style={styles.image}
       />
       <View style={styles.content}>
         <View style={styles.row}>
           <Text style={styles.name} numberOfLines={1}>
-            {chat.user.name}
+          {user.firstName} {user.lastName}
           </Text>
+          {lastMessage && (
           <Text style={styles.subTitle}>
-            {dayjs(chat.lastMessage.createdAt).fromNow(true)}
+            {dayjs(lastMessage.timestamp).fromNow(true)}
           </Text>
+        )}
         </View>
 
-        <Text numberOfLines={2} style={styles.subTitle}>
-          {chat.lastMessage.text}
-        </Text>
+        {lastMessage && (
+          <Text numberOfLines={2} style={styles.subTitle}>
+            {lastMessage.text}
+          </Text>
+        )}
       </View>
     </Pressable>
   );

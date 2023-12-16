@@ -8,7 +8,7 @@ import firebase from "../../../config";
 
 
 const database = firebase.database();
-const InputBox = ({senderId, receiverId}) => {
+const InputBox = ({senderId, receiverId, isTyping, onTyping}) => {
   //state data
   const route = useRoute();
   const [newMessage, setNewMessage] = useState("");
@@ -16,7 +16,6 @@ const InputBox = ({senderId, receiverId}) => {
   const onSend = async () => {
     const messagesRef =database.ref("messages");
     const timestamp = Date.now();
-    console.log("Timestamp before sending:", timestamp);
     
     const newMessageObject = {
       text: newMessage,
@@ -38,7 +37,10 @@ const InputBox = ({senderId, receiverId}) => {
       {/* Text Input */}
       <TextInput
         value={newMessage}
-        onChangeText={setNewMessage}
+        onChangeText={(text) => {
+          setNewMessage(text);
+          onTyping(); 
+        }}
         style={styles.input}
         placeholder="type your message..."
       />

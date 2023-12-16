@@ -4,14 +4,17 @@ import NotImplementedScreen from "../screens/NotImplementedScreen";
 import { Ionicons, Entypo } from "@expo/vector-icons";
 import ProfileScreen from "../screens/ProfileScreen";
 import firebase from "../../config";
+import { useRoute } from "@react-navigation/native";
 
 const auth = firebase.auth();
 
 const Tab = createBottomTabNavigator();
 
-const MainTabNavigator = (props) => {
+const MainTabNavigator = () => {
+  
   const user = auth.currentUser;
   const currentid = user.uid;
+  
   return (
     <Tab.Navigator
       initialRouteName="Chats"
@@ -19,9 +22,11 @@ const MainTabNavigator = (props) => {
         tabBarStyle: { backgroundColor: "whitesmoke" },
         headerStyle: { backgroundColor: "whitesmoke" },
       }}
+      
     >
       <Tab.Screen
         name="Chats"
+        initialParams={{ currentid }}
         component={ChatsScreen}
         options={({ navigation }) => ({
           tabBarIcon: ({ color, size }) => (

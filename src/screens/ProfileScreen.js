@@ -112,25 +112,11 @@ const ProfileScreen = () => {
       }
     });
 
-    // Nettoyer le listener lors du démontage du composant
     return () => {
       ref_user.off("value");
     };
   }, [currentid]);
 
-  //   const handleUpdateStatus = () => {
-  //     const userId = firebase.auth().currentUser.uid;
-  //     const statusRef = firebase.database().ref(`users/${userId}/status`);
-
-  //     // Mettez à jour le statut dans la base de données Firebase
-  //     statusRef.set(profile.status)
-  //       .then(() => {
-  //         console.log('Status updated successfully');
-  //       })
-  //       .catch((error) => {
-  //         console.error('Error updating status:', error);
-  //       });
-  //   };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>

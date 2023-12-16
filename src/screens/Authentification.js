@@ -3,7 +3,7 @@ import { ImageBackground, StyleSheet, Text, View ,TextInput, TouchableOpacity} f
 import Button from '../components/Button';
 import { useState, useRef } from 'react';
 import firebase from "../../config";
-import green from '../../assets/images/green3.png'
+import green from '../../assets/images/green1.jpg'
 
 const auth = firebase.auth();
 
@@ -28,7 +28,7 @@ export default function Authentification(props) {
           }}
           blurOnSubmit={false}
           style={styles.inputBox}
-          placeholder={"Login"}
+          placeholder={"login"}
           keyboardType={"default"}
         />
         <TextInput

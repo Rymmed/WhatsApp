@@ -1,4 +1,11 @@
-import { Text, View, Image, StyleSheet, Pressable, Linking } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  Pressable,
+  Linking,
+} from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -9,10 +16,10 @@ import firebase from "../../../config";
 
 const database = firebase.database();
 
-const ContactListItem = ({user }) => {
+const ContactListItem = ({ user }) => {
   const navigation = useNavigation();
   const route = useRoute();
-  const {currentid}  = route.params;
+  const { currentid } = route.params;
   const [visible, setVisible] = useState(false);
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
@@ -28,7 +35,6 @@ const ContactListItem = ({user }) => {
       })
       .catch((err) => console.error(`Error opening phone call: ${err}`));
   };
-  
 
   return (
     <Pressable onPress={showDialog} style={styles.container}>
@@ -50,7 +56,17 @@ const ContactListItem = ({user }) => {
             <Text>What would you like to do with {user.firstName}?</Text>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => navigation.navigate('Chat', { currentid, contactId: user.id} )}>Send Message</Button>
+            <Button
+              onPress={() =>
+                navigation.navigate("Chat", {
+                  currentid,
+                  contactId: user.id,
+                  contactName: `${user.firstName} ${user.lastName}`,
+                })
+              }
+            >
+              Send Message
+            </Button>
             <Button onPress={() => handleCall(user.phone)}>Call</Button>
           </Dialog.Actions>
         </Dialog>
